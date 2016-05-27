@@ -17,7 +17,8 @@ end
 APP_RAKEFILE = File.expand_path("../test/dummy/Rakefile", __FILE__)
 load 'rails/tasks/engine.rake'
 
-
+#### Addming rake tasks for the quality meter gem from lib tasks
+import "./lib/tasks/quality_meter_tasks.rake"
 
 Bundler::GemHelper.install_tasks
 
