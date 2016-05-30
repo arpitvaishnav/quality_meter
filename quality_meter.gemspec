@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.add_development_dependency "bundler", "~> 1.8"
   s.add_development_dependency "rake", "~> 10.0"
-
+  s.add_runtime_dependency "railties", "~> 4.0"
   s.add_runtime_dependency "brakeman" , "~> 3.3"
   s.add_runtime_dependency "metric_fu" ,"~> 4.12"
   s.add_runtime_dependency "terminal-table", "~> 1.5"

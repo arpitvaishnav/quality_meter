@@ -1,7 +1,7 @@
-require "qmeter/version"
-require 'qmeter/railtie' if defined?(Rails)
+require "quality_meter/version"
+# require 'quality_meter/railtie' if defined?(Rails)
 require "csv"
-require "qmeter/engine"
+require "quality_meter/engine"
 
 module QualityMeter
   def initialize_thresholds(thresholds)
@@ -94,8 +94,8 @@ module QualityMeter
     # Save report data into the CSV
     ### Hide this because we are not using this currently
     #flag = false
-    #flag = File.file?("#{Rails.root}/qmeter.csv")
-    CSV.open("#{Rails.root}/qmeter.csv", "a") do |csv|
+    #flag = File.file?("#{Rails.root}/quality_meter.csv")
+    CSV.open("#{Rails.root}/quality_meter.csv", "a") do |csv|
       #csv << ['flog','stats','rails_best_practices','warnings', 'timestamp'] if flag == false
       sha = `git rev-parse HEAD`
       csv << [@flog_average_complexity, @stats_code_to_test_ratio, @rails_best_practices_total, @warnings_count, sha]
@@ -104,7 +104,7 @@ module QualityMeter
 
   def get_previour_result
     # Get previous report data
-    @previous_reports = CSV.read("#{Rails.root}/qmeter.csv").last(4) if File.file?("#{Rails.root}/qmeter.csv")
+    @previous_reports = CSV.read("#{Rails.root}/quality_meter.csv").last(4) if File.file?("#{Rails.root}/quality_meter.csv")
   end
 
   def choose_color

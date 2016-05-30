@@ -16,11 +16,11 @@ namespace :quality_meter do
 
   task :add_command_in_post_commit do
     ### Asked user to add rake command inside git post commit file , Task will run in each eommit
-    STDOUT.puts "Write Y to add rake qmeter:run command to 'post commit', it will run when you commit the code".reverse_color
+    STDOUT.puts "Write Y to add rake quality_meter:run command to 'post commit', it will run when you commit the code".reverse_color
     input = STDIN.gets.strip
     if input == 'y' || input == 'Y'
       File.open('.git/hooks/post-commit', 'a') do |f|
-        f.puts "rake qmeter:run"
+        f.puts "rake quality_meter:run"
       end
       system "chmod +x .git/hooks/post-commit"
     else
@@ -33,18 +33,18 @@ namespace :quality_meter do
     if File.directory?('.git') && File.exists?('.git/config')
       ### this will check git post commit has rake command or not
       if File.file?('.git/hooks/post-commit')
-        file =  File.read(".git/hooks/post-commit").include?('rake qmeter:run')
-        if !file =  File.read(".git/hooks/post-commit").include?('rake qmeter:run')
-          Rake::Task["qmeter:add_command_in_post_commit"].execute
+        file =  File.read(".git/hooks/post-commit").include?('rake quality_meter:run')
+        if !file =  File.read(".git/hooks/post-commit").include?('rake quality_meter:run')
+          Rake::Task["quality_meter:add_command_in_post_commit"].execute
         end
       else
-        Rake::Task["qmeter:add_command_in_post_commit"].execute
+        Rake::Task["quality_meter:add_command_in_post_commit"].execute
       end
 
       ###This always executes the task, but it doesn't execute its dependencies
-      Rake::Task["qmeter:generate_report"].execute
+      Rake::Task["quality_meter:generate_report"].execute
       ### *** ###
-      extend Qmeter
+      extend quality_meter
       self.generate_final_report
       puts "======= Saving Current Analysis Details ======="
       self.save_report
@@ -56,10 +56,10 @@ namespace :quality_meter do
       rows << ['Flog', @flog_average_complexity]
       rows << ['Stats', @stats_code_to_test_ratio]
       rows << ['Rails Best Practices', @rails_best_practices_total]
-      table = Terminal::Table.new :title => "Qmeter Analysis", :headings => ['Type', 'Number'], :rows => rows, :style => {:width => 80}
+      table = Terminal::Table.new :title => "quality_meter Analysis", :headings => ['Type', 'Number'], :rows => rows, :style => {:width => 80}
       puts table
 
-      puts "======= Please visit localhost:3000/qmeter for detailed report ======="
+      puts "======= Please visit localhost:3000/quality_meter for detailed report ======="
     else
       puts "======= Please Initialize git first =======".bold.green.bg_red
     end
@@ -67,7 +67,7 @@ namespace :quality_meter do
 
   # This will append Files/Folders in .gitignore file
   task :gitignore do
-    add_to_gitignore("qmeter.csv")
+    add_to_gitignore("quality_meter.csv")
     add_to_gitignore("report.json")
     add_to_gitignore("report.html")
     add_to_gitignore("public/metric_fu")
